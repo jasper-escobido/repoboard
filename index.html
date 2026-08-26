@@ -11,14 +11,24 @@
     <header>
         <h1>RepoBoard</h1>
     </header>
+      
+         <button type="button" id="add-repo-btn">+</button>
+         <dialog id="repo-modal">
+            <form>
+                <label for="reponame">Repository Name</label>
+                <input type="text" id="reponame" class="reponame">
+                <button type="submit" id="submit-repo-btn">Add repo</button>
+            </form>
+            <button type="button" id="exit-btn">X</button>
+         </dialog>
 
     <main>
         <section id="board-container"> 
             <article class="project-card">
-                
+
                 <h2>Project Title</h2>
                 <p>Description:</p>
-                <progress id="rps-bar" value="60" max="100"></progress>
+                <progress id="rps-bar" value="0" max="100"></progress>
 
             </article>
         </section>

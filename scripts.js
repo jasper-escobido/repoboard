@@ -5,9 +5,6 @@ const closeBtn = document.getElementById("exit-btn");
 const submitBtn = document.getElementById("submit-repo-btn");
 const inputRepo = document.getElementById("reponame");
 
-console.log(addRepoBtn);
-console.log(openModal);
-console.log(closeBtn);
 
 addRepoBtn.addEventListener('click', () => {
     openModal.showModal();
@@ -22,10 +19,10 @@ submitBtn.addEventListener('click', (event) => {
     event.preventDefault();
     if (inputRepo.value != "") {
         getProjectProgress(inputRepo.value);
+        localStorage.setItem("saveRepo", inputRepo.value);
         openModal.close();
         inputRepo.value = "";
     }
-    console.log(inputRepo.value);
 })
 
 
@@ -36,6 +33,10 @@ async function getProjectProgress(repoName) {
     try {
 		const response = await fetch(githubIssuesUrl);
 		const data = await response.json();
+        if (data.message === "Not Found") {
+            alert("Repository not found!");
+            return;
+        }
 		console.log(data);
 
 		const openIssue = data.filter( issue => issue.state === "open");
@@ -50,9 +51,17 @@ async function getProjectProgress(repoName) {
 		progressBar.value = progressPercentage;
 		console.log(progressBar);
 
+        const projectName = document.getElementById('project-name')
+        projectName.innerText = repoName;
+
 
 	} catch (error) {
 		console.error(error);
 	}
 }
 
+const savedRepo = localStorage.getItem("saveRepo");
+
+if (savedRepo != null && savedRepo != "") {
+    getProjectProgress(savedRepo);
+}

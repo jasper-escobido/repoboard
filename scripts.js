@@ -19,10 +19,10 @@ submitBtn.addEventListener('click', (event) => {
     event.preventDefault();
     console.log(inputDesc.value);
     if (inputRepo.value != "") {
-        getProjectProgress(inputRepo.value);
         let currentList = JSON.parse(localStorage.getItem("savedRepos"));
-        let newProjectData = {repoName: inputRepo.value, description: inputDesc.value};
+        let newProjectData = {repoName: inputRepo.value, repoDesc: inputDesc.value};
         currentList.push(newProjectData);
+        getProjectProgress(newProjectData);
         localStorage.setItem("savedRepos", JSON.stringify(currentList));
         console.log(currentList);
         openModal.close();
@@ -32,7 +32,9 @@ submitBtn.addEventListener('click', (event) => {
 
 
 
-async function getProjectProgress(repoName) {
+async function getProjectProgress(projectFolder) {
+    const repoName = projectFolder.repoName;
+    const repoDesc = projectFolder.repoDesc;
 	const githubIssuesUrl = `https://api.github.com/repos/jasper-escobido/${repoName}/issues?state=all`;
     
     try {
@@ -63,7 +65,7 @@ async function getProjectProgress(repoName) {
         newCard.appendChild(newTitle);
 
         const newDesc = document.createElement("p");
-        newDesc.innerText = "Description: "; 
+        newDesc.innerText = "Description: " + repoDesc ; 
         newCard.appendChild(newDesc);
 
         const newProgressBar = document.createElement("progress");
@@ -92,7 +94,7 @@ if (myProjects === null) {
 if (myProjects != null) {
     const savedList = JSON.parse(localStorage.getItem("savedRepos"));
     console.log(savedList);
-    savedList.forEach((projectName) => {
-        getProjectProgress(projectName);
+    savedList.forEach((projectFolder) => {
+        getProjectProgress(projectFolder);
     });
 }

@@ -1,9 +1,9 @@
-
 const addRepoBtn = document.getElementById("add-repo-btn");
 const openModal = document.getElementById("repo-modal");
 const closeBtn = document.getElementById("exit-btn");
 const submitBtn = document.getElementById("submit-repo-btn");
 const inputRepo = document.getElementById("reponame");
+const inputDesc = document.getElementById("repodesc");
 
 
 addRepoBtn.addEventListener('click', () => {
@@ -17,11 +17,14 @@ closeBtn.addEventListener('click', () => {
 
 submitBtn.addEventListener('click', (event) => {
     event.preventDefault();
+    console.log(inputDesc.value);
     if (inputRepo.value != "") {
         getProjectProgress(inputRepo.value);
         let currentList = JSON.parse(localStorage.getItem("savedRepos"));
-        currentList.push(inputRepo.value);
+        let newProjectData = {repoName: inputRepo.value, description: inputDesc.value};
+        currentList.push(newProjectData);
         localStorage.setItem("savedRepos", JSON.stringify(currentList));
+        console.log(currentList);
         openModal.close();
         inputRepo.value = "";
     }

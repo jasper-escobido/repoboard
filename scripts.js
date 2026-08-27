@@ -19,7 +19,9 @@ submitBtn.addEventListener('click', (event) => {
     event.preventDefault();
     if (inputRepo.value != "") {
         getProjectProgress(inputRepo.value);
-        localStorage.setItem("saveRepo", inputRepo.value);
+        let currentList = JSON.parse(localStorage.getItem("savedRepos"));
+        currentList.push(inputRepo.value);
+        localStorage.setItem("savedRepos", JSON.stringify(currentList));
         openModal.close();
         inputRepo.value = "";
     }
@@ -37,6 +39,7 @@ async function getProjectProgress(repoName) {
             alert("Repository not found!");
             return;
         }
+
 		console.log(data);
 
 		const openIssue = data.filter( issue => issue.state === "open");
@@ -47,12 +50,27 @@ async function getProjectProgress(repoName) {
 		const progressPercentage = Math.floor((completedIssues / totalIssues) * 100);
 		console.log(progressPercentage);
 
-		const progressBar = document.getElementById('rps-bar');
-		progressBar.value = progressPercentage;
-		console.log(progressBar);
+        const newCard = document.createElement("article");
+        newCard.classList.add("project-card");
 
-        const projectName = document.getElementById('project-name')
-        projectName.innerText = repoName;
+        const newTitle = document.createElement("h2");
+        newTitle.innerText = repoName;
+        console.log(newTitle);
+        const dashboardWall = document.getElementById('board-container');
+        newCard.appendChild(newTitle);
+
+        const newDesc = document.createElement("p");
+        newDesc.innerText = "Description: "; 
+        newCard.appendChild(newDesc);
+
+        const newProgressBar = document.createElement("progress");
+        newProgressBar.max = 100;
+        newProgressBar.value = progressPercentage;
+        newProgressBar.id = "rps-bar"
+        newCard.appendChild(newProgressBar);
+        
+        
+        dashboardWall.appendChild(newCard);
 
 
 	} catch (error) {
@@ -60,8 +78,18 @@ async function getProjectProgress(repoName) {
 	}
 }
 
-const savedRepo = localStorage.getItem("saveRepo");
 
-if (savedRepo != null && savedRepo != "") {
-    getProjectProgress(savedRepo);
+
+let myProjects = localStorage.getItem("savedRepos");
+
+if (myProjects === null) {
+    localStorage.setItem("savedRepos", "[]");
+}
+
+if (myProjects != null) {
+    const savedList = JSON.parse(localStorage.getItem("savedRepos"));
+    console.log(savedList);
+    savedList.forEach((projectName) => {
+        getProjectProgress(projectName);
+    });
 }

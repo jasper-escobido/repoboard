@@ -2,6 +2,10 @@
     box-sizing: border-box;
 }
 
+body {
+    font-size: 18px;
+}
+
 #repodesc {
     resize:none;
 }
@@ -22,6 +26,12 @@ main {
     margin: 0 auto;
 }
 
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
 #board-container {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
@@ -30,6 +40,15 @@ main {
 
 h2 {
     overflow-wrap: break-word;
+}
+
+input, textarea, button {
+    padding: 12px;
+    font-size: 1rem;
+}
+
+dialog {
+    padding: 20px;
 }
 
 @media (max-width: 768px) {

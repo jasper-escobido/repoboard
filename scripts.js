@@ -36,7 +36,6 @@ resetBtn.addEventListener('click', () => {
     setTimeout(async () => {
         document.getElementById('board-container').innerHTML = "";
         const savedList = JSON.parse(localStorage.getItem("savedRepos"));
-        console.log(savedList);
         for (const projectFolder of savedList) {
             await getProjectProgress(projectFolder, false);
         };

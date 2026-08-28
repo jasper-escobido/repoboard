@@ -5,3 +5,36 @@
 #repodesc {
     resize:none;
 }
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: white;
+    position: sticky;
+    top: 0;
+}
+
+main {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+#board-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+}
+
+h2 {
+    overflow-wrap: break-word;
+}
+
+@media (max-width: 768px) {
+    #board-container {
+        grid-template-columns: 1fr;
+    }
+
+}

@@ -4,6 +4,7 @@ const closeBtn = document.getElementById("exit-btn");
 const submitBtn = document.getElementById("submit-repo-btn");
 const inputRepo = document.getElementById("reponame");
 const inputDesc = document.getElementById("repodesc");
+const resetBtn = document.getElementById("sync-btn")
 
 
 addRepoBtn.addEventListener('click', () => {
@@ -19,32 +20,44 @@ submitBtn.addEventListener('click', (event) => {
     event.preventDefault();
     console.log(inputDesc.value);
     if (inputRepo.value != "") {
-        let currentList = JSON.parse(localStorage.getItem("savedRepos"));
+        
         let newProjectData = {repoName: inputRepo.value, repoDesc: inputDesc.value};
-        currentList.push(newProjectData);
-        getProjectProgress(newProjectData);
-        localStorage.setItem("savedRepos", JSON.stringify(currentList));
-        console.log(currentList);
+        getProjectProgress(newProjectData, true);
+      
         openModal.close();
         inputRepo.value = "";
     }
 })
 
+resetBtn.addEventListener('click', () => {
+    document.getElementById('board-container').innerHTML = "";
+    const savedList = JSON.parse(localStorage.getItem("savedRepos"));
+    console.log(savedList);
+    savedList.forEach((projectFolder) => {
+        getProjectProgress(projectFolder, false);
+    });
+})
 
 
-async function getProjectProgress(projectFolder) {
+
+async function getProjectProgress(projectFolder, isNew) {
     const repoName = projectFolder.repoName;
     const repoDesc = projectFolder.repoDesc;
 	const githubIssuesUrl = `https://api.github.com/repos/jasper-escobido/${repoName}/issues?state=all`;
-    
+    let currentList = JSON.parse(localStorage.getItem("savedRepos"));
     try {
-		const response = await fetch(githubIssuesUrl);
+		const response = await fetch(githubIssuesUrl, {cache: "no-store"});
 		const data = await response.json();
         if (data.message === "Not Found") {
             alert("Repository not found!");
             return;
         }
-
+        
+        if(isNew === true) {
+            currentList.push(projectFolder);
+            localStorage.setItem("savedRepos", JSON.stringify(currentList));
+            console.log(currentList);
+        }
 		console.log(data);
 
 		const openIssue = data.filter( issue => issue.state === "open");
@@ -52,8 +65,16 @@ async function getProjectProgress(projectFolder) {
 
 		const totalIssues = data.length;
 		const completedIssues = data.filter(issue => issue.state === "closed").length;
-		const progressPercentage = Math.floor((completedIssues / totalIssues) * 100);
-		console.log(progressPercentage);
+
+        let progressPercentage;
+		
+		
+        if (totalIssues === 0) {
+            progressPercentage = 0;
+        } else {
+            progressPercentage =  Math.floor((completedIssues / totalIssues) * 100);
+        }
+        console.log(progressPercentage);
 
         const newCard = document.createElement("article");
         newCard.classList.add("project-card");
@@ -95,6 +116,6 @@ if (myProjects != null) {
     const savedList = JSON.parse(localStorage.getItem("savedRepos"));
     console.log(savedList);
     savedList.forEach((projectFolder) => {
-        getProjectProgress(projectFolder);
+        getProjectProgress(projectFolder, false);
     });
 }

@@ -30,12 +30,20 @@ submitBtn.addEventListener('click', (event) => {
 })
 
 resetBtn.addEventListener('click', () => {
-    document.getElementById('board-container').innerHTML = "";
-    const savedList = JSON.parse(localStorage.getItem("savedRepos"));
-    console.log(savedList);
-    savedList.forEach((projectFolder) => {
-        getProjectProgress(projectFolder, false);
-    });
+    resetBtn.disabled = true;
+    resetBtn.innerText = "Syncing..."
+   
+    setTimeout(async () => {
+        document.getElementById('board-container').innerHTML = "";
+        const savedList = JSON.parse(localStorage.getItem("savedRepos"));
+        console.log(savedList);
+        for (const projectFolder of savedList) {
+            await getProjectProgress(projectFolder, false);
+        };
+        resetBtn.disabled = false;
+        resetBtn.innerText = "Refresh Data";
+    }, 7000);
+
 })
 
 

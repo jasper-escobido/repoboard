@@ -2,9 +2,10 @@ const addRepoBtn = document.getElementById("add-repo-btn");
 const openModal = document.getElementById("repo-modal");
 const closeBtn = document.getElementById("exit-btn");
 const submitBtn = document.getElementById("submit-repo-btn");
+const inputUser = document.getElementById("username");
 const inputRepo = document.getElementById("reponame");
 const inputDesc = document.getElementById("repodesc");
-const resetBtn = document.getElementById("sync-btn")
+const resetBtn = document.getElementById("sync-btn");
 
 
 addRepoBtn.addEventListener('click', () => {
@@ -21,9 +22,9 @@ submitBtn.addEventListener('click', (event) => {
     console.log(inputDesc.value);
     if (inputRepo.value != "") {
         
-        let newProjectData = {repoName: inputRepo.value, repoDesc: inputDesc.value};
+        let newProjectData = {repoUser: inputUser.value, repoName: inputRepo.value, repoDesc: inputDesc.value};
         getProjectProgress(newProjectData, true);
-      
+        localStorage.setItem("username", inputUser.value);
         openModal.close();
         inputRepo.value = "";
     }
@@ -50,7 +51,9 @@ resetBtn.addEventListener('click', () => {
 async function getProjectProgress(projectFolder, isNew) {
     const repoName = projectFolder.repoName;
     const repoDesc = projectFolder.repoDesc;
-	const githubIssuesUrl = `https://api.github.com/repos/jasper-escobido/${repoName}/issues?state=all`;
+    const repoUser = projectFolder.repoUser;
+    
+	const githubIssuesUrl = `https://api.github.com/repos/${repoUser}/${repoName}/issues?state=all`;
     let currentList = JSON.parse(localStorage.getItem("savedRepos"));
     try {
 		const response = await fetch(githubIssuesUrl, {cache: "no-store"});
@@ -132,4 +135,10 @@ if (myProjects != null) {
     savedList.forEach((projectFolder) => {
         getProjectProgress(projectFolder, false);
     });
+}
+
+let savedUser = localStorage.getItem("username");
+
+if (savedUser != null) {
+    inputUser.value = savedUser;
 }

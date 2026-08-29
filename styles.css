@@ -22,6 +22,7 @@ body {
     font-style: normal;
     background-color: var(--background);
     color: var(--text);
+    margin: 0;
 }
 
 h1, h2, h3, h4, h5 {
@@ -39,12 +40,12 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    max-width: 90%;
+    max-width: 100%;
     margin: 0 auto;
     padding: 10px 20px;
     background-color: var(--secondary);
     position: sticky;
-    top: 0;
+    top: 0
 }
 
 main {
@@ -81,6 +82,9 @@ input, textarea, button {
 dialog {
     padding: 20px;
     position: relative;
+    background-color: var(--secondary);
+    color: var(--text);
+    border: none;
 }
 
 #exit-btn {
@@ -105,6 +109,18 @@ button {
     border: 4px solid var(--primary);
     padding: 20px;
     border-radius: 12px;
+}
+
+.custom-progress-track {
+    height: 20px;
+    background-color: var(--secondary);
+    border-radius: 10px;
+}
+
+.custom-progress-fill {
+    height: 100%;
+    background-color: var(--accent);
+    border-radius: 10pxs;
 }
 
 @media (max-width: 768px) {

@@ -96,11 +96,18 @@ async function getProjectProgress(projectFolder, isNew) {
         newDesc.innerText = "Description: " + repoDesc ; 
         newCard.appendChild(newDesc);
 
-        const newProgressBar = document.createElement("progress");
-        newProgressBar.max = 100;
-        newProgressBar.value = progressPercentage;
-        newProgressBar.id = "rps-bar"
+        const newProgressBar = document.createElement("div");
+        newProgressBar.classList.add("custom-progress-track");
+
+        const newProgressFill = document.createElement("div");
+        newProgressFill.classList.add("custom-progress-fill");
+        newProgressFill.style.width = progressPercentage + "%";
+        newProgressBar.appendChild(newProgressFill);
         newCard.appendChild(newProgressBar);
+
+        const newProgressText = document.createElement("span");
+        newProgressText.innerText = progressPercentage + '%'
+        newProgressBar.append(newProgressText);
         
         
         dashboardWall.appendChild(newCard);

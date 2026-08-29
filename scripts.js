@@ -112,6 +112,18 @@ async function getProjectProgress(projectFolder, isNew) {
         const newProgressText = document.createElement("span");
         newProgressText.innerText = progressPercentage + '%'
         newProgressBar.append(newProgressText);
+
+
+        const removeBtn = document.createElement("button");
+        removeBtn.innerText = "X";
+        removeBtn.classList.add("remove-card-btn");
+        removeBtn.addEventListener ('click', () => {
+            console.log("Delete button clicked for " + repoName);
+            newCard.remove();
+            let updatedList =  currentList.filter(project => project.repoName !== repoName );
+            localStorage.setItem("savedRepos", JSON.stringify(updatedList));
+        })
+        newCard.appendChild(removeBtn);
         
         
         dashboardWall.appendChild(newCard);

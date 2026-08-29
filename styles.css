@@ -8,8 +8,6 @@
     --accent: #1c25a0;
 }
 
-
-
 * {
     box-sizing: border-box;
 }
@@ -34,6 +32,7 @@ h1, h2, h3, h4, h5 {
 
 #repodesc {
     resize:none;
+    min-height: 120px;
 }
 
 header {
@@ -82,6 +81,8 @@ input, textarea, button {
 dialog {
     padding: 20px;
     position: relative;
+    width: 80%;
+    max-width: 500px;
     background-color: var(--secondary);
     color: var(--text);
     border: none;

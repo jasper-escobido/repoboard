@@ -27,6 +27,7 @@ submitBtn.addEventListener('click', (event) => {
         localStorage.setItem("username", inputUser.value);
         openModal.close();
         inputRepo.value = "";
+        inputDesc.value = "";
     }
 })
 
@@ -52,7 +53,7 @@ async function getProjectProgress(projectFolder, isNew) {
     const repoName = projectFolder.repoName;
     const repoDesc = projectFolder.repoDesc;
     const repoUser = projectFolder.repoUser;
-    
+
 	const githubIssuesUrl = `https://api.github.com/repos/${repoUser}/${repoName}/issues?state=all`;
     let currentList = JSON.parse(localStorage.getItem("savedRepos"));
     try {

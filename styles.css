@@ -94,7 +94,8 @@ dialog {
     padding: 0;
     width: 35px;
     height: 35px;
-    border-radius: 50%;
+    background-color: transparent;
+    border: none;
 }
 
 .btn-head > button{
@@ -110,8 +111,16 @@ button {
     border: 4px solid var(--primary);
     padding: 20px;
     border-radius: 12px;
+    position: relative;
 }
 
+.remove-card-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background-color: transparent;
+    border: none;
+}
 .custom-progress-track {
     height: 20px;
     background-color: var(--secondary);
